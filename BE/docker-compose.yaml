@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: mysql:8.0
+    restart: always # 컨테이너 재시작시 안정성 보장
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ourlog
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: 'Asia/Seoul'
+    command: [ "--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci" ]
+    networks:
+      - blog-network
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    container_name: spring-boot
+    build: ..
+    image: jujuu/ourlog:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ourlog
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
