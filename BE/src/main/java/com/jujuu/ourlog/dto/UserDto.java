@@ -5,21 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class UserDto {
     private Long id;
-    private String name;
+    private String nickname;
 
     public static UserDto fromEntity(User user) {
         return UserDto.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .nickname(user.getNickname())
                 .build();
     }
 }

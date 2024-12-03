@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping
     public List<UserDto> getAllUsers() {
         log.info("GET /users HTTP/1.1");
 
         return userService.getUsers();
     }
 
-    @PostMapping("/create-user")
+    @PostMapping
     public CreateUser.Response createUser(
             @Valid @RequestBody CreateUser.Request request
     ) {

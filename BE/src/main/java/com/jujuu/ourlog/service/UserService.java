@@ -17,13 +17,18 @@ public class UserService {
 
     @Transactional
     public CreateUser.Response createUser(CreateUser.Request request) {
+        // TODO: 유효성 검증 에러 반환
 
-        User developer = User.builder()
-                .name(request.getName())
+        User user = User.builder()
+                .userId(request.getUserId())
+                .nickname(request.getNickname())
+                .email(request.getEmail())
+                .password(request.getPassword()) // TODO: 암호화
+                .profileMedia(null)
                 .build();
 
-        userRepository.save(developer);
-        return CreateUser.Response.fromEntity(developer);
+        userRepository.save(user);
+        return CreateUser.Response.fromEntity(user);
     }
 
     public List<UserDto> getUsers() {
