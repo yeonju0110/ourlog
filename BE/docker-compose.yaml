@@ -15,7 +15,7 @@ services:
     networks:
       - blog-network
     volumes:
-      - db_data:/var/lib/mysql
+      - ourlog_db_data:/var/lib/mysql
 
   app:
     container_name: spring-boot
@@ -37,5 +37,5 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  ourlog_db_data:
     driver: local
