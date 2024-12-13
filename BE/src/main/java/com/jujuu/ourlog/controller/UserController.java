@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping
     public CreateUser.Response createUser(
             @Valid @RequestBody CreateUser.Request request
-    ) {
+    ) throws Exception {
         log.info("request: {}", request);
 
         return userService.createUser(request);
