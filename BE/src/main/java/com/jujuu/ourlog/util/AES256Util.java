@@ -5,10 +5,13 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * AES-256 암호화 및 복호화를 위한 유틸리티 클래스 AES/CBC/PKCS5Padding 알고리즘을 사용하여 문자열 암호화 및 복호화 기능 제공
  */
+@Component
 public class AES256Util {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding"; // 알고리즘, 모드 및 패딩 방식
@@ -23,7 +26,7 @@ public class AES256Util {
      * @param key 32자의 비밀 키
      * @throws IllegalArgumentException 키 길이가 32자가 아닌 경우 예외 발생
      */
-    public AES256Util(String key) {
+    public AES256Util(@Value("${encryption.aes.key}") String key) {
         if (key == null || key.length() != KEY_SIZE) {
             throw new IllegalArgumentException("AES-256을 사용하려면 키는 반드시 32자여야 합니다.");
         }

@@ -15,17 +15,16 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
 
-    private static final String AES_KEY = "12345678901234567890123456789012"; // TODO: 수정
+    private final AES256Util aes256Util;
 
     public LoginDto.Response login(LoginDto.Request request) throws Exception {
-        AES256Util aesUtil = new AES256Util(AES_KEY);
 
         // DB에서 사용자를 검증
         User user = userRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid userId"));
 
         // PW 검증
-        if (!request.getPassword().equals(aesUtil.decrypt(user.getPassword()))) {
+        if (!request.getPassword().equals(aes256Util.decrypt(user.getPassword()))) {
             throw new IllegalArgumentException("Invalid password");
         }
 
