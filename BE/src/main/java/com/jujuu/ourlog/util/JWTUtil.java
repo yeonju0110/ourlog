@@ -7,13 +7,25 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JWTUtil {
-    private static final String SECRET_KEY = "12345678901234567890123456789012"; // TODO: 수정 - 최소 32자 이상의 시크릿 키
-    private static final long EXPIRATION_TIME = 3600000; // 1시간
 
-    // HMAC-SHA 키 생성
-    private static final Key KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    private final Key key;
+    private final long expirationTime;
+    private static final int KEY_SIZE = 32;
+
+    public JWTUtil(
+            @Value("${encryption.jwt.secret-key}") String secretKey,
+            @Value("${encryption.jwt.expiration-time}") long expirationTime) {
+        if (secretKey == null || secretKey.length() != KEY_SIZE) {
+            throw new IllegalArgumentException("JWT키는 반드시 32자 이상여야 합니다.");
+        }
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        this.expirationTime = expirationTime;
+    }
 
     /**
      * JWT 생성 메서드
@@ -21,12 +33,12 @@ public class JWTUtil {
      * @param userId 사용자 로그인 ID
      * @return 생성된 JWT
      */
-    public static String generateToken(String userId) {
+    public String generateToken(String userId) {
         return Jwts.builder()
-                .setSubject(userId) // 토큰의 주체 설정
+                .setSubject(userId)
                 .setIssuedAt(new Date()) // 생성 시간
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료 시간
-                .signWith(KEY, SignatureAlgorithm.HS256) // 서명 알고리즘 및 키 설정
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // 만료 시간
+                .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 및 키 설정
                 .compact();
     }
 
@@ -36,9 +48,9 @@ public class JWTUtil {
      * @param token 검증할 JWT
      * @return 검증된 Claims 객체
      */
-    public static Claims validateToken(String token) {
+    public Claims validateToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(KEY) // 서명 키 설정
+                .setSigningKey(key) // 서명 키 설정
                 .build()
                 .parseClaimsJws(token) // 토큰 검증
                 .getBody(); // Claims 반환
@@ -50,7 +62,7 @@ public class JWTUtil {
      * @param token JWT
      * @return 추출된 사용자 로그인 ID
      */
-    public static String extractUserIdId(String token) {
+    public String extractUserId(String token) {
         return validateToken(token).getSubject();
     }
 }

@@ -17,6 +17,8 @@ public class AuthService {
 
     private final AES256Util aes256Util;
 
+    private final JWTUtil jwtUtil;
+
     public LoginDto.Response login(LoginDto.Request request) throws Exception {
 
         // DB에서 사용자를 검증
@@ -28,12 +30,8 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid password");
         }
 
-        String token = generateToken(user.getUserId());
+        String token = jwtUtil.generateToken(user.getUserId());
 
         return LoginDto.Response.of(token);
-    }
-
-    private String generateToken(String userId) {
-        return JWTUtil.generateToken(userId);
     }
 }
