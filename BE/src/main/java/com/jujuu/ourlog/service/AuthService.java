@@ -25,11 +25,11 @@ public class AuthService {
 
         // DB에서 사용자를 검증
         User user = userRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new OurlogException(OurlogErrorCode.LOGIN_FAILED));
+                .orElseThrow(() -> new OurlogException(OurlogErrorCode.LOGIN_FAILED, "User not found"));
 
         // PW 검증
         if (!request.getPassword().equals(aes256Util.decrypt(user.getPassword()))) {
-            throw new OurlogException(OurlogErrorCode.LOGIN_FAILED);
+            throw new OurlogException(OurlogErrorCode.LOGIN_FAILED, "Password not matched");
         }
 
         String token = jwtUtil.generateToken(user.getUserId());
