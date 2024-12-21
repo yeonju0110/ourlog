@@ -1,6 +1,5 @@
-package com.jujuu.ourlog.config;
+package com.jujuu.ourlog.auth;
 
-import com.jujuu.ourlog.util.JWTUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;

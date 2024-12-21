@@ -1,10 +1,10 @@
 package com.jujuu.ourlog.service;
 
+import com.jujuu.ourlog.auth.AES256Util;
 import com.jujuu.ourlog.dto.CreateUser;
 import com.jujuu.ourlog.dto.UserDto;
 import com.jujuu.ourlog.entity.User;
 import com.jujuu.ourlog.repository.UserRepository;
-import com.jujuu.ourlog.util.AES256Util;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package com.jujuu.ourlog.util;
+package com.jujuu.ourlog.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
