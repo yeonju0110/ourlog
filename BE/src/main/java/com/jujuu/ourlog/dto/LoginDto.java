@@ -1,7 +1,5 @@
 package com.jujuu.ourlog.dto;
 
-import com.jujuu.ourlog.entity.User;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -9,7 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class CreateUser {
+public class LoginDto {
+
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -21,14 +20,6 @@ public class CreateUser {
         private String userId;
 
         @NotNull
-        @Size(min = 3, max = 20, message = "닉네임 길이는 3~20 사이여야 합니다")
-        private String nickname;
-
-        @NotNull
-        @Email(message = "이메일 형식이 올바르지 않습니다")
-        private String email;
-
-        @NotNull
         @Size(min = 8, max = 20, message = "비밀번호 길이는 8~20 사이여야 합니다")
         private String password;
     }
@@ -38,11 +29,11 @@ public class CreateUser {
     @NoArgsConstructor
     @Builder
     public static class Response {
-        private String userId;
+        private String accessToken;
 
-        public static Response fromEntity(User user) {
+        public static LoginDto.Response of(String accessToken) {
             return Response.builder()
-                    .userId(user.getUserId())
+                    .accessToken(accessToken)
                     .build();
         }
     }

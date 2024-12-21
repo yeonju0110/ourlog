@@ -1,8 +1,8 @@
 package com.jujuu.ourlog.controller;
 
 import com.jujuu.ourlog.common.response.ApiResponseEntity;
-import com.jujuu.ourlog.dto.CreateUser;
-import com.jujuu.ourlog.service.UserService;
+import com.jujuu.ourlog.dto.LoginDto;
+import com.jujuu.ourlog.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class UserController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    @PostMapping
-    public ApiResponseEntity<CreateUser.Response> createUser(
-            @Valid @RequestBody CreateUser.Request request
+    @PostMapping("/login")
+    public ApiResponseEntity<LoginDto.Response> login(
+            @Valid @RequestBody LoginDto.Request request
     ) throws Exception {
-        log.info("request: {}", request);
+        log.info("POST /login HTTP/1.1 request: {}", request);
 
-        CreateUser.Response response = userService.createUser(request);
-        return ApiResponseEntity.success(HttpStatus.CREATED, "User created successfully", response);
+        LoginDto.Response response = authService.login(request);
+        return ApiResponseEntity.success(HttpStatus.OK, "Login successful", response);
     }
 }
