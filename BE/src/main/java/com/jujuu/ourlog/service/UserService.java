@@ -2,12 +2,9 @@ package com.jujuu.ourlog.service;
 
 import com.jujuu.ourlog.common.auth.AES256Util;
 import com.jujuu.ourlog.dto.CreateUser;
-import com.jujuu.ourlog.dto.UserDto;
 import com.jujuu.ourlog.entity.User;
 import com.jujuu.ourlog.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +33,5 @@ public class UserService {
 
     private String encryptPassword(String rawPassword) throws Exception {
         return aes256Util.encrypt(rawPassword);
-    }
-
-    public List<UserDto> getUsers() {
-        return userRepository.findAll().stream()
-                .map(UserDto::fromEntity)
-                .collect(Collectors.toList());
     }
 }
