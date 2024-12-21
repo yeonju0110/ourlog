@@ -17,8 +17,8 @@ public class ApiResponseEntity<T> extends ResponseEntity<ApiResponse<T>> {
     }
 
     // 실패 응답 팩토리 메서드
-    public static ApiResponseEntity<Object> failure(HttpStatus status, String errorCode, String message) {
-        ApiResponse<Object> response = new ApiResponse<>(status.value(), errorCode, message);
+    public static ApiResponseEntity<Object> failure(HttpStatus status, String message, String errorCode) {
+        ApiResponse<Object> response = new ApiResponse<>(status.value(), message, errorCode);
         return new ApiResponseEntity<>(response, status);
     }
 }
