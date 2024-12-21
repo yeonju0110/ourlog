@@ -30,13 +30,23 @@ public class JWTInterceptor implements HandlerInterceptor {
         String token = authorizationHeader.substring(7);
 
         try {
+            // JWT 검증
             Claims claims = jwtUtil.validateToken(token);
-            request.setAttribute("userId", claims.getSubject()); // 유저 정보 저장
+
+            // 유저 ID를 ThreadLocal에 저장
+            UserContext.setUserId(claims.getSubject());
+
             return true;
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid token");
             return false;
         }
+    }
+
+    @Override
+    public void afterCompletion(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response,
+                                @Nonnull Object handler, @Nonnull Exception ex) {
+        UserContext.clear(); // 요청 처리 후 ThreadLocal 값 삭제
     }
 }
