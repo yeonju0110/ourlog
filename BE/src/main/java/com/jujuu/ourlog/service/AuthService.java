@@ -2,6 +2,8 @@ package com.jujuu.ourlog.service;
 
 import com.jujuu.ourlog.common.auth.AES256Util;
 import com.jujuu.ourlog.common.auth.JWTUtil;
+import com.jujuu.ourlog.common.response.OurlogErrorCode;
+import com.jujuu.ourlog.common.response.OurlogException;
 import com.jujuu.ourlog.dto.LoginDto;
 import com.jujuu.ourlog.entity.User;
 import com.jujuu.ourlog.repository.UserRepository;
@@ -23,11 +25,11 @@ public class AuthService {
 
         // DB에서 사용자를 검증
         User user = userRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid userId"));
+                .orElseThrow(() -> new OurlogException(OurlogErrorCode.LOGIN_FAILED));
 
         // PW 검증
         if (!request.getPassword().equals(aes256Util.decrypt(user.getPassword()))) {
-            throw new IllegalArgumentException("Invalid password");
+            throw new OurlogException(OurlogErrorCode.LOGIN_FAILED);
         }
 
         String token = jwtUtil.generateToken(user.getUserId());
