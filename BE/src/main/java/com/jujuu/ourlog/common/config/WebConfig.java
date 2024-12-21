@@ -1,6 +1,6 @@
-package com.jujuu.ourlog.config;
+package com.jujuu.ourlog.common.config;
 
-import com.jujuu.ourlog.auth.JWTInterceptor;
+import com.jujuu.ourlog.common.auth.JWTInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

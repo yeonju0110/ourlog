@@ -1,4 +1,4 @@
-package com.jujuu.ourlog.auth;
+package com.jujuu.ourlog.common.auth;
 
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;

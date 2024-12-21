@@ -1,4 +1,4 @@
-package com.jujuu.ourlog.auth;
+package com.jujuu.ourlog.common.auth;
 
 public class UserContext {
 
